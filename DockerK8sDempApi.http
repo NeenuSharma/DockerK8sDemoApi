@@ -1,0 +1,6 @@
+@DockerK8sDempApi_HostAddress = http://localhost:5062
+
+GET {{DockerK8sDempApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

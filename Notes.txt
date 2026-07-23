@@ -1,0 +1,17 @@
+docker compose up --build -d
+docker compose up -d
+docker compose down
+kubectl apply -f k8s/Sqlserver.yml
+
+kubectl get pods -w
+
+kubectl apply -f k8s/MyApi.yml
+
+kubectl get pods
+
+kubectl delete -f k8s/MyApi.yml
+kubectl delete -f k8s/Sqlserver.yml
+
+//$ docker save dockerk8sdemoapi-demo-api:latest -o demo-api.tar
+//$ docker cp demo-api.tar desktop-control-plane:/demo-api.tar
+//$ docker exec desktop-control-plane ctr -n k8s.io images import //demo-api.tar

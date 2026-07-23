@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api
+spec:
+  replicas: 2                             # 2 copies - so you can see scaling/self-healing
+  selector:
+    matchLabels:
+      app: demo-api
+  template:
+    metadata:
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: demo-api
+          image: dockerk8sdemoapi-demo-api:latest   # the image already built by docker compose
+          imagePullPolicy: Never                     # use local image, don't fetch from internet
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=sqlserver-service;Database=ProductDB;User Id=sa;Password=Neenu!Pass22;TrustServerCertificate=True"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-api-service
+spec:
+  selector:
+    app: demo-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer
